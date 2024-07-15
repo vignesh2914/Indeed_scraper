@@ -17,7 +17,6 @@ def make_url(job_keyword: str, location_keyword: str, index: int) -> str:
 
 def scrape_job_data(job_keyword: str, location_keyword: str, time_limit: int) -> List[Dict[str, str]]:
     options = webdriver.ChromeOptions()
-    options.add_argument('--headless')
     options.add_argument('--disable-gpu')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
@@ -28,14 +27,6 @@ def scrape_job_data(job_keyword: str, location_keyword: str, time_limit: int) ->
 
     try:
         driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
-        stealth(driver,
-            languages=["en-US", "en"],
-            vendor="Google Inc.",
-            platform="Win32",
-            webgl_vendor="Intel Inc.",
-            renderer="Intel Iris OpenGL Engine",
-            fix_hairline=True,
-        )
         
         job_results = []
         start_time = time.time()
