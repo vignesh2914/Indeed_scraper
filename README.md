@@ -9,6 +9,6 @@ Done it can able scrap location role job_title
 
 output as an dataframe soon it will be impemented using with streamlit package 
 
-![Screenshot](https://github.com/vignesh2914/Indeed_scraper/blob/main/images/output.png)
+![Screenshot](https://github.com/vignesh2914/Indeed_scraper/blob/main/images/output1.png)
 
 
