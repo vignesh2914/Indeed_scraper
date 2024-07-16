@@ -2,7 +2,6 @@ import logging
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
-from selenium_stealth import stealth
 import time
 import pandas as pd
 from bs4 import BeautifulSoup
