@@ -6,6 +6,7 @@ import time
 import pandas as pd
 from bs4 import BeautifulSoup
 from typing import List, Dict
+from exception import CustomException
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -66,14 +67,52 @@ def parse_job_data_from_soup(page_soup):
         company_name = company.text.strip() 
         location = job.find("your tag", class_="your_class")
         location = location.text.strip() 
+        job_link = job.find("your tag", class_="your_class")
+        job_link = job_link.text.strip() 
+
+        if job_link != 'N/A':
+            job_link = "https://www.indeed.com" + job_link
+
 
         job_results.append({
             'Job Title': job_title,
             'Company Name': company_name,
-            'Location': location
+            'Location': location,
+            'job_link': job_link
         })
 
     return job_results
+
+def create_dataframe_of_job_data(job_data: List[Dict[str, str]]) -> pd.DataFrame:
+    try:
+        if job_data:
+            column_names = ["Job Title", "Company Name", "Location", "Job Link"]
+            df = pd.DataFrame(job_data, columns=column_names)
+            logging.info("Data converted into dataframe")
+            return df
+        else:
+            logging.info("No job data found to create dataframe.")
+            return pd.DataFrame(columns=["Job Title", "Company Name", "Location", "Job Link"])
+    except Exception as e:
+        error_msg = f"An error occurred while creating the dataframe: {e}"
+        logging.error(error_msg)
+        raise CustomException(error_msg) from e
+
+def get_unique_companies_df(df: pd.DataFrame, column_name: str) -> pd.DataFrame:
+    try:
+        filtered_df = df.drop_duplicates(subset=[column_name]).reset_index(drop=True)
+        logging.info("Unique company name dataframe created")
+        return filtered_df
+    except Exception as e:
+        error_msg = f"An error occurred while creating the unique companies dataframe: {e}"
+        logging.error(error_msg)
+        raise CustomException(error_msg) from e
+
+
+
+
+
+
 
 job_title = input("Enter job title keyword: ")
 location = input("Enter location keyword: ")
